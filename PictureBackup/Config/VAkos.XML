@@ -1,0 +1,320 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>VAkos</name>
+    </assembly>
+    <members>
+        <member name="T:VAkos.ConfigSetting">
+            <summary>
+            Represents a Configuration Node in the XML file
+            </summary>
+        </member>
+        <member name="F:VAkos.ConfigSetting.node">
+            <summary>
+            The node from the XMLDocument, which it describes
+            </summary>
+        </member>
+        <member name="M:VAkos.ConfigSetting.#ctor">
+            <summary>
+            This class cannot be constructed directly. You will need to give a node to describe
+            </summary>
+        </member>
+        <member name="M:VAkos.ConfigSetting.#ctor(System.Xml.XmlNode)">
+            <summary>
+            Creates an instance of the class
+            </summary>
+            <param name="node">
+            the XmlNode to describe
+            </param>
+        </member>
+        <member name="M:VAkos.ConfigSetting.ChildCount(System.Boolean)">
+            <summary>
+            Gets the number of children of the specific node
+            </summary>
+            <param name="unique">
+            If true, get only the number of children with distinct names.
+            So if it has two nodes with "foo" name, and three nodes
+            named "bar", the return value will be 2. In the same case, if unique
+            was false, the return value would have been 2 + 3 = 5
+            </param>
+            <returns>
+            The number of (uniquely named) children
+            </returns>
+        </member>
+        <member name="M:VAkos.ConfigSetting.ChildrenNames(System.Boolean)">
+            <summary>
+            Gets the names of children of the specific node
+            </summary>
+            <param name="unique">
+            If true, get only distinct names.
+            So if it has two nodes with "foo" name, and three nodes
+            named "bar", the return value will be {"bar","foo"} . 
+            In the same case, if unique was false, the return value 
+            would have been {"bar","bar","bar","foo","foo"}
+            </param>
+            <returns>
+            An IList object with the names of (uniquely named) children
+            </returns>
+        </member>
+        <member name="M:VAkos.ConfigSetting.Children">
+            <summary>
+            An IList compatible object describing each and every child node
+            </summary>
+            <remarks>Read only property</remarks>
+        </member>
+        <member name="M:VAkos.ConfigSetting.GetNamedChildren(System.String)">
+            <summary>
+            Get all children with the same name, specified in the name parameter
+            </summary>
+            <param name="name">
+            An alphanumerical string, containing the name of the child nodes to return
+            </param>
+            <returns>
+            An array with the child nodes with the specified name, or null 
+            if no childs with the specified name exist
+            </returns>
+        </member>
+        <member name="M:VAkos.ConfigSetting.GetNamedChildrenCount(System.String)">
+            <summary>
+            Gets the number of childs with the specified name
+            </summary>
+            <param name="name">
+            An alphanumerical string with the name of the nodes to look for
+            </param>
+            <returns>
+            An integer with the count of the nodes
+            </returns>
+        </member>
+        <member name="M:VAkos.ConfigSetting.Validate">
+            <summary>
+            Check if the node conforms with the config xml restrictions
+            1. No nodes with two children of the same name
+            2. Only alphanumerical names
+            </summary>
+            <returns>
+            True on success and false on failiure
+            </returns>        
+        </member>
+        <member name="M:VAkos.ConfigSetting.Clean">
+            <summary>
+            Removes any empty nodes from the tree, 
+            that is it removes a node, if it hasn't got any
+            children, or neither of its children have got a value.
+            </summary>
+        </member>
+        <member name="M:VAkos.ConfigSetting.Remove">
+            <summary>
+            Remove the specific node from the tree
+            </summary>
+        </member>
+        <member name="M:VAkos.ConfigSetting.RemoveChildren">
+            <summary>
+            Remove all children of the node, but keep the node itself
+            </summary>
+        </member>
+        <member name="P:VAkos.ConfigSetting.Name">
+            <summary>
+            The Name of the element it describes
+            </summary>
+            <remarks>Read only property</remarks>        
+        </member>
+        <member name="P:VAkos.ConfigSetting.Value">
+            <summary>
+            String value of the specific Configuration Node
+            </summary>
+        </member>
+        <member name="P:VAkos.ConfigSetting.intValue">
+            <summary>
+            int value of the specific Configuration Node
+            </summary>
+        </member>
+        <member name="P:VAkos.ConfigSetting.boolValue">
+            <summary>
+            bool value of the specific Configuration Node
+            </summary>
+        </member>
+        <member name="P:VAkos.ConfigSetting.floatValue">
+            <summary>
+            float value of the specific Configuration Node
+            </summary>
+        </member>
+        <member name="P:VAkos.ConfigSetting.Item(System.String)">
+            <summary>
+            Get a specific child node
+            </summary>
+            <param name="path">
+            The path to the specific node. Can be either only a name, or a full path separated by '/' or '\'
+            </param>
+            <example>
+            <code>
+            XmlConfig conf = new XmlConfig("configuration.xml");
+            screenname = conf.Settings["screen"].Value;
+            height = conf.Settings["screen/height"].IntValue;
+             // OR
+            height = conf.Settings["screen"]["height"].IntValue;
+            </code>
+            </example>
+            <returns>
+            The specific child node
+            </returns>
+        </member>
+        <member name="T:VAkos.Xmlconfig">
+            <summary>
+            The class which represents a configuration xml file
+            </summary>
+        </member>
+        <member name="M:VAkos.Xmlconfig.#ctor">
+            <summary>
+            Create an XmlConfig from an empty xml file 
+            containing only the rootelement named as 'xml'
+            </summary>
+        </member>
+        <member name="M:VAkos.Xmlconfig.#ctor(System.String,System.Boolean)">
+            <summary>
+            Create an XmlConfig from an existing file, or create a new one
+            </summary>
+            <param name="loadfromfile">
+            Path and filename from where to load the xml file
+            </param>
+            <param name="create">
+            If file does not exist, create it, or throw an exception?
+            </param>
+        </member>
+        <member name="M:VAkos.Xmlconfig.ValidateXML(System.Boolean)">
+            <summary>
+            Check XML file if it conforms the config xml restrictions
+            1. No nodes with two children of the same name
+            2. Only alphanumerical names
+            </summary>
+            <param name="silent">
+            Whether to return a true/false value, or throw an exception on failiure
+            </param>
+            <returns>
+            True on success and in case of silent mode false on failiure
+            </returns>
+        </member>
+        <member name="M:VAkos.Xmlconfig.Clean">
+            <summary>
+            Strip empty nodes from the whole tree.
+            </summary>
+        </member>
+        <member name="M:VAkos.Xmlconfig.Dispose">
+            <summary>
+            Save any modifications to the XML file before destruction
+            if CommitOnUnload is true
+            </summary>
+        </member>
+        <member name="M:VAkos.Xmlconfig.LoadXmlFromFile(System.String,System.Boolean)">
+            <summary>
+            Load a new XmlDocument from a file
+            </summary>
+            <param name="filename">
+            Path and filename from where to load the xml file
+            </param>
+            <param name="create">
+            If file does not exist, create it, or throw an exception?
+            </param>
+        </member>
+        <member name="M:VAkos.Xmlconfig.LoadXmlFromFile(System.String)">
+            <summary>
+            Load a new XmlDocument from a file
+            </summary>
+            <param name="filename">
+            Path and filename from where to load the xml file
+            </param>
+            <remarks>
+            Throws an exception if file does not exist
+            </remarks>
+        </member>
+        <member name="M:VAkos.Xmlconfig.LoadXmlFromString(System.String)">
+            <summary>
+            Load a new XmlDocument from a string
+            </summary>
+            <param name="xml">
+            XML string
+            </param>
+        </member>
+        <member name="M:VAkos.Xmlconfig.NewXml(System.String)">
+            <summary>
+            Load an empty XmlDocument
+            </summary>
+            <param name="rootelement">
+            Name of root element
+            </param>
+        </member>
+        <member name="M:VAkos.Xmlconfig.Save(System.String)">
+            <summary>
+            Save configuration to an xml file
+            </summary>
+            <param name="filename">
+            Path and filname where to save
+            </param>
+        </member>
+        <member name="M:VAkos.Xmlconfig.Save(System.IO.Stream)">
+            <summary>
+            Save configuration to a stream
+            </summary>
+            <param name="stream">
+            Stream where to save
+            </param>
+        </member>
+        <member name="M:VAkos.Xmlconfig.Commit">
+            <summary>
+            If loaded from a file, commit any changes, by overwriting the file
+            </summary>
+            <returns>
+            True on success
+            False on failiure, probably due to the file was not loaded from a file
+            </returns>
+        </member>
+        <member name="M:VAkos.Xmlconfig.Reload">
+            <summary>
+            If loaded from a file, trash any changes, and reload the file
+            </summary>
+            <returns>
+            True on success
+            False on failiure, probably due to file was not loaded from a file
+            </returns>
+        </member>
+        <member name="P:VAkos.Xmlconfig.CleanUpOnSave">
+            <summary>
+            Whether to clean the tree by stripping out
+            empty nodes before saving the XML config
+            file
+            </summary>
+        </member>
+        <member name="P:VAkos.Xmlconfig.CommitOnUnload">
+            <summary>
+            When unloading the current XML config file
+            shold any changes be saved back to the file?
+            </summary>
+            <remarks>
+            <list type="bullet">
+            <item>Only applies if it was loaded from a local file</item>
+            <item>True by default</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="P:VAkos.Xmlconfig.Settings">
+            <summary>
+            Gets the root ConfigSetting
+            </summary>
+        </member>
+        <member name="T:VAkos.MD5">
+            <summary>
+            Class used to generate md5 sums
+            </summary>
+        </member>
+        <member name="M:VAkos.MD5.hash(System.String)">
+            <summary>
+            Gets the md5 hash of a string
+            </summary>
+            <param name="text">
+            String whose md5sum to calculate
+            </param>
+            <returns>
+            hexadecimal representation of hash
+            </returns>
+        </member>
+    </members>
+</doc>
