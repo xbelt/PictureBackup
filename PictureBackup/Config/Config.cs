@@ -11,7 +11,7 @@ namespace PictureBackup.Config
     static class Config
     {
         public static ConfigSetting Settings;
-        public static Xmlconfig Xmlconfig;
+        private static Xmlconfig Xmlconfig;
 
         public static void Init()
         {
@@ -34,6 +34,11 @@ namespace PictureBackup.Config
             Settings["out"]["count"].intValue = 0;
             Settings["settings"]["updateInterval"].intValue = 5;
             config.Commit();
+        }
+
+        public static void Commit()
+        {
+            Xmlconfig.Commit();
         }
     }
 }

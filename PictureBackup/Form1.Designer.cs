@@ -34,12 +34,13 @@
             this.outListView = new System.Windows.Forms.ListView();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.settingsButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // listView1
+            // inListView
             // 
             this.inListView.Location = new System.Drawing.Point(12, 37);
-            this.inListView.Name = "listView1";
+            this.inListView.Name = "inListView";
             this.inListView.Size = new System.Drawing.Size(259, 97);
             this.inListView.TabIndex = 0;
             this.inListView.UseCompatibleStateImageBehavior = false;
@@ -63,10 +64,10 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Out:";
             // 
-            // listView2
+            // outListView
             // 
             this.outListView.Location = new System.Drawing.Point(297, 37);
-            this.outListView.Name = "listView2";
+            this.outListView.Name = "outListView";
             this.outListView.Size = new System.Drawing.Size(271, 97);
             this.outListView.TabIndex = 3;
             this.outListView.UseCompatibleStateImageBehavior = false;
@@ -92,11 +93,22 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.OutButtonAddClick);
             // 
+            // settingsButton
+            // 
+            this.settingsButton.Location = new System.Drawing.Point(500, 142);
+            this.settingsButton.Name = "settingsButton";
+            this.settingsButton.Size = new System.Drawing.Size(75, 23);
+            this.settingsButton.TabIndex = 6;
+            this.settingsButton.Text = "Settings";
+            this.settingsButton.UseVisualStyleBackColor = true;
+            this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(580, 177);
+            this.ClientSize = new System.Drawing.Size(587, 177);
+            this.Controls.Add(this.settingsButton);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.outListView);
@@ -118,6 +130,7 @@
         private System.Windows.Forms.ListView outListView;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button settingsButton;
     }
 }
 

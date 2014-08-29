@@ -16,9 +16,10 @@ namespace PictureBackup
         public Form1()
         {
             InitializeComponent();
+            Config.Config.Init();
             inListView.KeyDown += DeleteIn;
             outListView.KeyDown += DeleteOut;
-            Config.Config.Init();
+
             for (var i = 0; i < Cfg.Settings["in"]["count"].intValue; i++)
             {
                 inListView.Items.Add(new ListViewItem(Cfg.Settings["in"]["Entry" + i].Value));
@@ -28,6 +29,8 @@ namespace PictureBackup
             {
                 inListView.Items.Add(new ListViewItem(Cfg.Settings["out"]["Entry" + i].Value));
             }
+
+
         }
 
         private void DeleteOut(object sender, KeyEventArgs e)
@@ -44,7 +47,7 @@ namespace PictureBackup
                         var newValue = Cfg.Settings["out"]["Entry" + (count - 1)].Value;
                         Cfg.Settings["out"]["Entry" + index].Value = newValue;
                     }
-                    Cfg.Xmlconfig.Commit();
+                    Cfg.Commit();
                     selectedItem.Remove();
                 }
             }
@@ -64,7 +67,7 @@ namespace PictureBackup
                         var newValue = Cfg.Settings["in"]["Entry" + (count - 1)].Value;
                         Cfg.Settings["in"]["Entry" + index].Value = newValue;
                     }
-                    Cfg.Xmlconfig.Commit();
+                    Cfg.Commit();
                     selectedItem.Remove();
                 }
             }
@@ -79,7 +82,7 @@ namespace PictureBackup
                     var oldCount = Cfg.Settings["in"]["count"].intValue;
                     Cfg.Settings["in"]["Entry" + oldCount].Value = odd.SelectedPath;
                     Cfg.Settings["in"]["count"].intValue = oldCount + 1;
-                    Cfg.Xmlconfig.Commit();
+                    Cfg.Commit();
                     inListView.Items.Add(new ListViewItem(odd.SelectedPath));
                 }
             }
@@ -94,10 +97,16 @@ namespace PictureBackup
                     var oldCount = Cfg.Settings["out"]["count"].intValue;
                     Cfg.Settings["out"]["Entry" + oldCount].Value = odd.SelectedPath;
                     Cfg.Settings["out"]["count"].intValue = oldCount + 1;
-                    Cfg.Xmlconfig.Commit();
+                    Cfg.Commit();
                     outListView.Items.Add(new ListViewItem(odd.SelectedPath));
                 }
             }
+        }
+
+        private void settingsButton_Click(object sender, EventArgs e)
+        {
+            var window = new Settings();
+            window.Show();
         }
     }
 }
