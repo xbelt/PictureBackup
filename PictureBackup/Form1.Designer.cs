@@ -28,22 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.inListView = new System.Windows.Forms.ListView();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.listView2 = new System.Windows.Forms.ListView();
+            this.outListView = new System.Windows.Forms.ListView();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView1
             // 
-            this.listView1.Location = new System.Drawing.Point(12, 37);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(259, 97);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.List;
+            this.inListView.Location = new System.Drawing.Point(12, 37);
+            this.inListView.Name = "listView1";
+            this.inListView.Size = new System.Drawing.Size(259, 97);
+            this.inListView.TabIndex = 0;
+            this.inListView.UseCompatibleStateImageBehavior = false;
+            this.inListView.View = System.Windows.Forms.View.List;
             // 
             // label1
             // 
@@ -65,12 +65,12 @@
             // 
             // listView2
             // 
-            this.listView2.Location = new System.Drawing.Point(297, 37);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(271, 97);
-            this.listView2.TabIndex = 3;
-            this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.View = System.Windows.Forms.View.List;
+            this.outListView.Location = new System.Drawing.Point(297, 37);
+            this.outListView.Name = "listView2";
+            this.outListView.Size = new System.Drawing.Size(271, 97);
+            this.outListView.TabIndex = 3;
+            this.outListView.UseCompatibleStateImageBehavior = false;
+            this.outListView.View = System.Windows.Forms.View.List;
             // 
             // button1
             // 
@@ -80,7 +80,7 @@
             this.button1.TabIndex = 4;
             this.button1.Text = "Add";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.InButtonAddClick);
             // 
             // button2
             // 
@@ -90,7 +90,7 @@
             this.button2.TabIndex = 5;
             this.button2.Text = "Add";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.OutButtonAddClick);
             // 
             // Form1
             // 
@@ -99,10 +99,10 @@
             this.ClientSize = new System.Drawing.Size(580, 177);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.listView2);
+            this.Controls.Add(this.outListView);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.inListView);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -112,10 +112,10 @@
 
         #endregion
 
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView inListView;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.ListView outListView;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
     }

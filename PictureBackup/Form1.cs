@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Cfg = PictureBackup.Config.Config;
 
 namespace PictureBackup
 {
@@ -15,56 +16,86 @@ namespace PictureBackup
         public Form1()
         {
             InitializeComponent();
+            inListView.KeyDown += DeleteIn;
+            outListView.KeyDown += DeleteOut;
             Config.Config.Init();
-            var current = 0;
-            while (true)
+            for (var i = 0; i < Cfg.Settings["in"]["count"].intValue; i++)
             {
-                string value = Config.Config.Settings["in"][current + ""].Value;
-                if (value != "")
-                {
-                    listView1.Items.Add(new ListViewItem(value));
-                }
-                else
-                {
-                    break;
-                }
+                inListView.Items.Add(new ListViewItem(Cfg.Settings["in"]["Entry" + i].Value));
             }
 
-            current = 0;
-            while (true)
+            for (var i = 0; i < Cfg.Settings["out"]["count"].intValue; i++)
             {
-                string value = Config.Config.Settings["out"][current + ""].Value;
-                if (value != "")
+                inListView.Items.Add(new ListViewItem(Cfg.Settings["out"]["Entry" + i].Value));
+            }
+        }
+
+        private void DeleteOut(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                foreach (ListViewItem selectedItem in outListView.SelectedItems)
                 {
-                    listView2.Items.Add(new ListViewItem(value));
-                }
-                else
-                {
-                    break;
+                    var index = selectedItem.Index;
+                    var count = Cfg.Settings["out"]["count"].intValue;
+                    Cfg.Settings["out"]["count"].intValue = count - 1;
+                    if (index < count - 1)
+                    {
+                        var newValue = Cfg.Settings["out"]["Entry" + (count - 1)].Value;
+                        Cfg.Settings["out"]["Entry" + index].Value = newValue;
+                    }
+                    Cfg.Xmlconfig.Commit();
+                    selectedItem.Remove();
                 }
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void DeleteIn(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                foreach (ListViewItem selectedItem in inListView.SelectedItems)
+                {
+                    var index = selectedItem.Index;
+                    var count = Cfg.Settings["in"]["count"].intValue;
+                    Cfg.Settings["in"]["count"].intValue = count - 1;
+                    if (index < count - 1)
+                    {
+                        var newValue = Cfg.Settings["in"]["Entry" + (count - 1)].Value;
+                        Cfg.Settings["in"]["Entry" + index].Value = newValue;
+                    }
+                    Cfg.Xmlconfig.Commit();
+                    selectedItem.Remove();
+                }
+            }
+        }
+
+        private void InButtonAddClick(object sender, EventArgs e)
         {
             using (var odd = new FolderBrowserDialog())
             {
                 if (odd.ShowDialog() == DialogResult.OK)
                 {
-                    Config.Config.Settings["in"][listView1.Items.Count + ""].Value = odd.SelectedPath;
-                    listView1.Items.Add(new ListViewItem(odd.SelectedPath));
+                    var oldCount = Cfg.Settings["in"]["count"].intValue;
+                    Cfg.Settings["in"]["Entry" + oldCount].Value = odd.SelectedPath;
+                    Cfg.Settings["in"]["count"].intValue = oldCount + 1;
+                    Cfg.Xmlconfig.Commit();
+                    inListView.Items.Add(new ListViewItem(odd.SelectedPath));
                 }
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void OutButtonAddClick(object sender, EventArgs e)
         {
             using (var odd = new FolderBrowserDialog())
             {
                 if (odd.ShowDialog() == DialogResult.OK)
                 {
-                    Config.Config.Settings["out"][listView1.Items.Count + ""].Value = odd.SelectedPath;
-                    listView2.Items.Add(new ListViewItem(odd.SelectedPath));
+                    var oldCount = Cfg.Settings["out"]["count"].intValue;
+                    Cfg.Settings["out"]["Entry" + oldCount].Value = odd.SelectedPath;
+                    Cfg.Settings["out"]["count"].intValue = oldCount + 1;
+                    Cfg.Xmlconfig.Commit();
+                    outListView.Items.Add(new ListViewItem(odd.SelectedPath));
                 }
             }
         }

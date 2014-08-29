@@ -23,10 +23,17 @@ namespace PictureBackup.Config
                 Directory.CreateDirectory(userFilePath);
             var configFilePath = Path.Combine(userFilePath, "config_PictureBackup.xml");
 
+            var alreadyExists = File.Exists(configFilePath);
             var config = new Xmlconfig(configFilePath, true);
             Xmlconfig = config;
             Settings = config.Settings;
             config.CommitOnUnload = true;
+            if (alreadyExists)
+                return;
+            Settings["in"]["count"].intValue = 0;
+            Settings["out"]["count"].intValue = 0;
+            Settings["settings"]["updateInterval"].intValue = 5;
+            config.Commit();
         }
     }
 }
