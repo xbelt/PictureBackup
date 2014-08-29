@@ -47,6 +47,7 @@
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\XMLConfig\ConfigSetting.cs" />
     <Compile Include="Config\XMLConfig\XmlConfig.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +93,12 @@
   <ItemGroup>
     <Content Include="Config\VAkos.dll" />
     <Content Include="Config\VAkos.XML" />
+    <Content Include="Resources\Green.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Red.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

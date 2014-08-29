@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using Cfg = PictureBackup.Config.Config;
 
 namespace PictureBackup
@@ -27,9 +30,72 @@ namespace PictureBackup
 
             for (var i = 0; i < Cfg.Settings["out"]["count"].intValue; i++)
             {
-                inListView.Items.Add(new ListViewItem(Cfg.Settings["out"]["Entry" + i].Value));
+                outListView.Items.Add(new ListViewItem(Cfg.Settings["out"]["Entry" + i].Value));
             }
 
+            (new Thread(AutomaticBackup) {IsBackground = true}).Start();
+        }
+
+        private void AutomaticBackup()
+        {
+            while (true)
+            {
+                pictureBox1.Image = Image.FromFile("Resources/Green.png");
+                foreach (ListViewItem item in GetListViewItems(inListView))
+                {
+                    if (Cfg.Settings["settings"]["recursive"].boolValue)
+                    {
+                        var folders = Directory.GetDirectories(item.Text, "*", SearchOption.AllDirectories);
+                        SyncFolders(folders, item.Text);
+                        var directFiles = Directory.GetFiles(item.Text, "*", SearchOption.AllDirectories);
+                        SyncFiles(directFiles, item.Text);
+                    }
+                    else
+                    {
+                        var directFiles = Directory.GetFiles(item.Text, "*", SearchOption.TopDirectoryOnly);
+                        SyncFiles(directFiles, item.Text);
+                    }
+                }
+
+                foreach (ListViewItem item in GetListViewItems(outListView))
+                {
+                    //TODO: track deletions
+                }
+
+                pictureBox1.Image = Image.FromFile("Resources/Red.png");
+                Thread.Sleep(Cfg.Settings["settings"]["updateInterval"].intValue * 60 * 1000);
+            }
+        }
+
+        private void SyncFolders(string[] folders, string baseFolder)
+        {
+            var relative = new Uri(baseFolder, UriKind.Absolute);
+            foreach (var folder in folders)
+            {
+                var relativeFolderPath = Uri.UnescapeDataString(relative.MakeRelativeUri(new Uri(folder, UriKind.Absolute)).ToString());
+
+                foreach (ListViewItem item in GetListViewItems(outListView))
+                {
+                    Directory.CreateDirectory(Path.Combine(item.Text, relativeFolderPath));
+                }
+            }
+        }
+
+        private void SyncFiles(IEnumerable<string> directFiles, string relativePath)
+        {
+            var relative = new Uri(relativePath, UriKind.Absolute);
+            foreach (var file in directFiles)
+            {
+                var relativeFilePath = Uri.UnescapeDataString(relative.MakeRelativeUri(new Uri(file, UriKind.Absolute)).ToString());
+
+                foreach (ListViewItem item in GetListViewItems(outListView))
+                {
+                    if (!File.Exists(Path.Combine(item.Text, relativeFilePath)))
+                    {
+                        File.Copy(file, Path.Combine(item.Text, relativeFilePath));
+                    }
+                }
+            }
 
         }
 
@@ -107,6 +173,21 @@ namespace PictureBackup
         {
             var window = new Settings();
             window.Show();
+        }
+
+        private delegate ListView.ListViewItemCollection GetItems(ListView lstview);
+
+        private ListView.ListViewItemCollection GetListViewItems(ListView lstview)
+        {
+            var temp = new ListView.ListViewItemCollection(new ListView());
+            if (!lstview.InvokeRequired)
+            {
+                foreach (ListViewItem item in lstview.Items)
+                    temp.Add((ListViewItem)item.Clone());
+                return temp;
+            }
+            else
+                return (ListView.ListViewItemCollection)Invoke(new GetItems(GetListViewItems), new object[] { lstview });
         }
     }
 }

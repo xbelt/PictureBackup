@@ -31,10 +31,12 @@
             this.updateIntervalNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.recursiveCheckBox = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.historyCheckBox = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.updateIntervalNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
@@ -63,15 +65,16 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "min";
             // 
-            // checkBox1
+            // recursiveCheckBox
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(109, 38);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(29, 17);
-            this.checkBox1.TabIndex = 3;
-            this.checkBox1.Text = " ";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.recursiveCheckBox.AutoSize = true;
+            this.recursiveCheckBox.Location = new System.Drawing.Point(109, 38);
+            this.recursiveCheckBox.Name = "recursiveCheckBox";
+            this.recursiveCheckBox.Size = new System.Drawing.Size(29, 17);
+            this.recursiveCheckBox.TabIndex = 3;
+            this.recursiveCheckBox.Text = " ";
+            this.recursiveCheckBox.UseVisualStyleBackColor = true;
+            this.recursiveCheckBox.CheckedChanged += new System.EventHandler(this.recursiveCheckBox_CheckedChanged);
             // 
             // label3
             // 
@@ -91,25 +94,45 @@
             this.label4.TabIndex = 5;
             this.label4.Text = "Keep history";
             // 
-            // checkBox2
+            // historyCheckBox
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(109, 62);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(29, 17);
-            this.checkBox2.TabIndex = 6;
-            this.checkBox2.Text = " ";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.historyCheckBox.AutoSize = true;
+            this.historyCheckBox.Location = new System.Drawing.Point(109, 62);
+            this.historyCheckBox.Name = "historyCheckBox";
+            this.historyCheckBox.Size = new System.Drawing.Size(29, 17);
+            this.historyCheckBox.TabIndex = 6;
+            this.historyCheckBox.Text = " ";
+            this.historyCheckBox.UseVisualStyleBackColor = true;
+            this.historyCheckBox.CheckedChanged += new System.EventHandler(this.historyCheckBox_CheckedChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(13, 89);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(97, 13);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "History folder name";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(109, 86);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(120, 20);
+            this.textBox1.TabIndex = 8;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Controls.Add(this.checkBox2);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.historyCheckBox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.recursiveCheckBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.updateIntervalNumericUpDown);
@@ -126,9 +149,11 @@
         private System.Windows.Forms.NumericUpDown updateIntervalNumericUpDown;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox recursiveCheckBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox historyCheckBox;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
